@@ -15,4 +15,5 @@ model Repo {
   repoName String @unique
   description String
   language String
+  html_url String
 }

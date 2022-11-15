@@ -4,15 +4,6 @@ import path from "path";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
-const USERNAME = "SapphireNick";
-
-// Setup DB-Specific
-let DB_USER, DB_PASSWORD;
-fs.readFile(path.join(__dirname, "../.env"), "utf-8", (err, data) => {
-  if (err) throw err;
-  DB_USER = data.split("\n")[0].split("=")[1];
-  DB_PASSWORD = data.split("\n")[0].split("=")[1];
-});
 
 interface RepoData {
   // Repository Name
@@ -23,6 +14,9 @@ interface RepoData {
 
   // Main language used in Project
   language: string;
+
+  // URL
+  html_url: string;
 }
 
 export async function getGitRepos(): Promise<Array<RepoData>> {
@@ -41,6 +35,7 @@ async function getData(): Promise<Array<RepoData>> {
       repoName: entry["name"],
       description: entry["description"],
       language: entry["language"],
+      html_url: entry["html_url"],
     });
   });
 
