@@ -2,9 +2,9 @@ import axios from "axios";
 import fs from "fs";
 import path from "path";
 import { PrismaClient } from "@prisma/client";
-import { USERNAME } from ".";
 
 const prisma = new PrismaClient();
+const USERNAME = "SapphireNick";
 
 // Setup DB-Specific
 let DB_USER, DB_PASSWORD;
@@ -25,13 +25,13 @@ interface RepoData {
   language: string;
 }
 
-export async function getGitRepos(username: string): Promise<Array<RepoData>> {
+export async function getGitRepos(): Promise<Array<RepoData>> {
   return await prisma.repo.findMany();
 }
 
-async function getData(username: string): Promise<Array<RepoData>> {
+async function getData(): Promise<Array<RepoData>> {
   const data = (
-    await axios.get(`https://api.github.com/users/${username}/repos`)
+    await axios.get(`https://api.github.com/users/SapphireNick/repos`)
   ).data;
 
   let res = new Array<RepoData>();
@@ -47,8 +47,8 @@ async function getData(username: string): Promise<Array<RepoData>> {
   return res;
 }
 
-export async function updateDatabase(username: string) {
-  const data = await getData(username);
+export async function updateDatabase() {
+  const data = await getData();
 
   // Clear Table
   await prisma.repo.deleteMany();

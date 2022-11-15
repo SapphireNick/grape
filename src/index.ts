@@ -1,23 +1,18 @@
 import express from "express";
 import { getGitRepos, updateDatabase } from "./GetGitRepos";
+import schedule from "node-schedule";
 
 const app = express();
 const PORT = 8080;
-export let USERNAME = "";
+
+// Start a cron-job (weekly)
+const job = schedule.scheduleJob("0 0 * * 0", async () => {
+  await updateDatabase();
+});
 
 app.use(express.json());
-app.post("/getGitRepos", async (req, res) => {
-  if (req.body.username === undefined) {
-    res.status(400).send({
-      message: "NO USERNAME GIVEN",
-    });
-    return;
-  }
-  if (req.body.username !== USERNAME) {
-    USERNAME = req.body.username;
-    await updateDatabase(USERNAME);
-  }
-  const data = await getGitRepos(req.body.username);
+app.get("/getGitRepos", async (req, res) => {
+  const data = await getGitRepos();
   res.json(data);
 });
 
