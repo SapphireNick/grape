@@ -8,7 +8,7 @@ import cors from "cors";
 const app = express();
 const PORT = 8080;
 
-const ELIGIBLE = fs.readFileSync(".forceupdate", "utf-8");
+const ELIGIBLE = fs.readFileSync(".forceupdate", "utf-8").trim();
 
 // Start a cron-job (weekly)
 const job = schedule.scheduleJob("0 0 * * 0", async () => {
