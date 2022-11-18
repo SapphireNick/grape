@@ -4,6 +4,8 @@ services:
     build: .
     ports:
       - "8080:8080"
+    networks:
+      - web-net
   pg-database:
     image: "postgres:15"
     ports:
@@ -11,3 +13,8 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - web-net
+networks:
+  web-net:
+    name: custom-network
