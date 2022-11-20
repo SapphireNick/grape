@@ -29,6 +29,7 @@ async function getData(): Promise<Array<RepoData>> {
   let res = new Array<RepoData>();
 
   data.forEach((entry: any) => {
+    if (entry["language"] == null) return; // github profile config => not really a project
     res.push({
       repoName: entry["name"],
       description: entry["description"],
