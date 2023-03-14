@@ -1,9 +1,10 @@
-FROM node:lts-alpine
+FROM node:16-slim
 
 EXPOSE 8080
 
-# For pg_isready (a bit hacky)
-RUN apk add --no-cache postgresql-client
+RUN apt-get update
+# For pg_isready (a bit hacky) and openssl for prisma
+RUN apt-get install -y openssl postgresql-client
 
 WORKDIR /app
 COPY . .
